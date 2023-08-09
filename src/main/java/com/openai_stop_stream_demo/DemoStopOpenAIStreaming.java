@@ -43,7 +43,7 @@ interface DemoStopOpenAIStreamingConfig {
     boolean isMaxChunks();
 }
 
-class StreamingInterruptedException extends RuntimeException {
+class StreamingInterruptedByClientException extends RuntimeException {
 }
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -98,9 +98,9 @@ class OpenAiChatStreamer {
                         chunkConsumer.ifPresent(stringConsumer -> stringConsumer.accept(responseChunk));
 
                         if (maxChunks.map(_maxChunks -> chunksReceived.get() == _maxChunks).orElse(false))
-                            throw new StreamingInterruptedException();
+                            throw new StreamingInterruptedByClientException();
                     });
-        } catch (StreamingInterruptedException ignored) {
+        } catch (StreamingInterruptedByClientException ignored) {
             streamingHasBeenInterrupted = true;
         }
         log.info(format("streaming|end|chunks|%d|interrupted|%b|%s|\n\t%s", chunksReceived.get(), streamingHasBeenInterrupted, requestMessage, responseBuffer));
