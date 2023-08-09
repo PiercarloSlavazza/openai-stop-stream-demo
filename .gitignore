@@ -1,0 +1,7 @@
+/java-ml-text-utils.iml
+/.idea
+/target
+/dependency-reduced-pom.xml
+/log.txt
+*.iml
+.DS_Store
